@@ -9,14 +9,16 @@ class PolyTreeNode
   end
 
   def parent=(par)
-
     @parent = par
-    
+    @parent.add_child(self)
+
   end
 
   def add_child(child)
-    @children << child
-    self   
+    if !@children.include?(child)
+      @children << child
+    end
+    self
   end
 
 
