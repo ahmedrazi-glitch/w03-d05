@@ -1,4 +1,6 @@
+
 class PolyTreeNode
+
   
   attr_reader :value, :parent, :children
 
@@ -9,7 +11,7 @@ class PolyTreeNode
   end
 
   def parent=(par)
-    # @parent.remove_child(self) if !@parent.nil? 
+    @parent.remove_child(self) if !@parent.nil? && par != @parent
     
     @parent = par
     if !@parent.nil? && !@parent.children.include?(self)
@@ -23,8 +25,14 @@ class PolyTreeNode
     if !@children.include?(child)
       @children << child
     end
+    child.parent = self
     self
   end
 
+  def remove_child(child)
+    raise 'I dont have you as a child' if !@children.include?(child)
+    #child.parent=(nil) 
+    @children.delete(child)
+  end
 
 end
