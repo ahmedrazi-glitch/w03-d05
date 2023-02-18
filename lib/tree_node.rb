@@ -2,7 +2,7 @@
 class PolyTreeNode
 
   
-  attr_reader :value, :parent, :children
+  attr_accessor :value, :parent, :children
 
   def initialize(value, parent = nil, children = [])
     @value = value
@@ -11,8 +11,9 @@ class PolyTreeNode
   end
 
   def parent=(par)
-    @parent.remove_child(self) if !@parent.nil? && par != @parent
-    
+    @parent.children.delete(self) if !@parent.nil? && par != @parent
+    # @parent.children.delete(self) if !@parent.nil?
+    # @children.delete(self)
     @parent = par
     if !@parent.nil? && !@parent.children.include?(self)
       @parent.add_child(self)
@@ -31,8 +32,19 @@ class PolyTreeNode
 
   def remove_child(child)
     raise 'I dont have you as a child' if !@children.include?(child)
-    #child.parent=(nil) 
+    child.parent=(nil) 
     @children.delete(child)
+  end
+
+  def dfs(search_value)
+    return self if @value == search_value
+    @children = self.children
+    
+    @children.each do |child|
+      child.dfs(search_value)
+    end
+
+    nil
   end
 
 end
