@@ -9,7 +9,9 @@ class KnightPathFinder
     @root_node = PolyTreeNode.new(start_pos)
     @size = 8*8
     @board = []
+    board_positions
     @considered_positions = Set.new
+    @considered_positions << start_pos
   end
 
   def board_positions
@@ -21,7 +23,7 @@ class KnightPathFinder
       end
     end
 
-    p @board
+    #p @board
   end
 
   def build_move_tree()
@@ -34,9 +36,20 @@ class KnightPathFinder
     # end
     # nil
 
-    q = [root_node]
+    q = [@root_node]
     until q.empty?
-      q.new_move_positions({})
+      processing_node = q.shift
+      p "processing nodes = #{processing_node.value}"
+      new_pos = new_move_positions(processing_node.value)
+      p "new_positions are #{new_pos}"
+      new_pos.each do |pos|
+        new_node = PolyTreeNode.new(pos)
+        new_node.parent = processing_node
+        @considered_positions << pos
+      end
+      p "new_children are #{processing_node.children.count}"
+      q += processing_node.children
+    end
   end
 
   def self.valid_moves(pos)
@@ -54,16 +67,18 @@ class KnightPathFinder
   def new_move_positions(pos)
     valid_moves = KnightPathFinder.valid_moves(pos)
     new_positions = valid_moves.reject { |el| @considered_positions.include?(el) } 
-    new_positions
+    new_board_positions = new_positions.select { |el| @board.include?(el) }
+    new_board_positions
   end
 
   
   
 end
 
-# pos = [0,0]
-# k = KnightPathFinder.new(pos)
+pos = [0,0]
+k = KnightPathFinder.new(pos)
 # p KnightPathFinder.valid_moves(pos)
 # k.considered_positions << [2,1]
 # p k.new_move_positions(pos)
 # k.board_positions
+k.build_move_tree
