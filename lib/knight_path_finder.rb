@@ -2,7 +2,7 @@ require_relative 'tree_node.rb'
 require 'set'
 
 class KnightPathFinder
-  attr_accessor :considered_positions 
+  attr_accessor :considered_positions, :root_node
 
   def initialize(start_pos)
     @start_pos = start_pos
@@ -82,3 +82,4 @@ k = KnightPathFinder.new(pos)
 # p k.new_move_positions(pos)
 # k.board_positions
 k.build_move_tree
+print k.root_node.bfs([6,4]).value
