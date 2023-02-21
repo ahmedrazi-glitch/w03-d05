@@ -27,15 +27,6 @@ class KnightPathFinder
   end
 
   def build_move_tree()
-    # return self if @value == search_value
-    # q = [self]
-    # until q.empty?
-    #   check_node = q.shift
-    #   return check_node if check_node.value == search_value
-    #   q.concat(check_node.children)
-    # end
-    # nil
-
     q = [@root_node]
     until q.empty?
       processing_node = q.shift
@@ -82,4 +73,4 @@ k = KnightPathFinder.new(pos)
 # p k.new_move_positions(pos)
 # k.board_positions
 k.build_move_tree
-print k.root_node.bfs([6,4]).value
+p k.considered_positions.length
